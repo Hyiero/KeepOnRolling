@@ -1,0 +1,24 @@
+# =============== #
+# Unity generated #
+# =============== #
+BoomBall-2016/Temp/*
+BoomBall-2016/Obj/*
+BoomBall-2016/Build/
+BoomBall-2016/Library/
+BoomBall-2016/sysinfo.txt
+BoomBall-2016/*.stackdump
+ 
+# ===================================== #
+# Visual Studio / MonoDevelop generated #
+# ===================================== #
+[Ee]xported[Oo]bj/
+.vs/
+/*.userprefs
+/*.csproj
+/*.pidb
+/*.suo
+/*.sln*
+/*.user
+/*.unityproj
+/*.booproj
+/*.meta
