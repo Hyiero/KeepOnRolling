@@ -12,10 +12,16 @@ namespace Commands
         [Inject]
         public IGuiService guiService { get; set; }
 
+        [Inject]
+        public IGameService gameService { get; set; }
+
         public override void Execute()
         {
-            guiService.StartNewGame();
             SceneManager.LoadScene((int)Constants.Scenes.Game);
+            guiService.StartNewGame();
+            //TODO: Need to make a gameService which will load prefabbed objects into the scene, and then need to research how to bind objects when they are added into the scene
+            //TODO: This is the code to load the ball and put it under the GameManager,which will live under the context
+            gameService.LoadNewGameObjects();
         }
     }
 }

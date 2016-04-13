@@ -8,7 +8,7 @@ namespace Contexts
     {
         void Start()
         {
-            GameContext context = new GameContext(this, true);
+            context = new GameContext(this, true);
             context.Start();
             DontDestroyOnLoad(this);
         }

@@ -9,12 +9,15 @@ using Views;
 using Mediators;
 using Managers;
 using System;
+using Services;
 
 namespace Contexts
 {
     public class GameContext : MVCSContext
     {
         public GameContext(MonoBehaviour contextView,bool autoMap) : base(contextView,autoMap) { }
+
+        private GameManager gameManager { get; set; }
 
         #region Needed for the use of Signals
         public override void Launch()
@@ -29,6 +32,15 @@ namespace Contexts
         {
             GetGameObjectReferences();
 
+            #region Singleton Binding
+            injectionBinder.Bind<IGameService>().To<GameService>().ToSingleton().CrossContext();
+            injectionBinder.Bind<IGameManager>().ToValue(gameManager).ToSingleton().CrossContext();
+            #endregion
+
+            injectionBinder.Bind<IPlayerView>().To<PlayerView>();
+
+            mediationBinder.Bind<PlayerView>().To<PlayerMediator>();
+
             commandBinder.Bind<QuitGameSignal>().To<QuitGameCommand>();
             commandBinder.Bind<LaunchNewGameSignal>().To<LaunchNewGameCommand>();
             commandBinder.Bind<StartUpGameSignal>().To<StartUpGameCommand>();
@@ -36,6 +48,7 @@ namespace Contexts
 
         private void GetGameObjectReferences()
         {
+            gameManager = GameObject.FindObjectOfType<GameManager>();
         }
     }
 }
