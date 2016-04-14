@@ -4,6 +4,7 @@ using strange.extensions.command.impl;
 using Managers;
 using UnityEngine.SceneManagement;
 using Services;
+using Signals;
 
 namespace Commands
 {

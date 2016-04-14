@@ -2,6 +2,7 @@
 using System.Collections;
 using strange.extensions.mediation.impl;
 using Managers;
+using Signals;
 
 namespace Services
 {
@@ -15,6 +16,8 @@ namespace Services
         public void Init()
         {
             gameManagerGO = GameObject.FindGameObjectWithTag("GameManager");
+            //TODO: This is so we don't have to go through start menu, comment out if want to test with start menu screen.
+            LoadNewGameObjects();
         }
 
         public void LoadNewGameObjects()
@@ -23,7 +26,7 @@ namespace Services
             playerGO.transform.SetParent(gameManagerGO.gameObject.transform);
             GameObject trackGO = Instantiate(Resources.Load("Prefabs/Track", typeof(GameObject))) as GameObject;
             trackGO.transform.SetParent(gameManagerGO.gameObject.transform);
-            gameManager.SetGameObjectReference(playerGO,trackGO);
+            gameManager.SetNewGameElements(playerGO,trackGO);
         }
     }
 }

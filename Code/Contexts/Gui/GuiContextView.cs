@@ -8,7 +8,7 @@ namespace Contexts
     {
         void Awake()
         {
-            GuiContext context = new GuiContext(this, true);
+            context = new GuiContext(this, true);
             context.Start();
             DontDestroyOnLoad(this);
         }

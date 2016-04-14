@@ -5,6 +5,6 @@ namespace Managers
 {
     public interface IGameManager
     {
-        void SetGameObjectReference(GameObject player, GameObject track);
+        void SetNewGameElements(GameObject player, GameObject track);
     }
 }
