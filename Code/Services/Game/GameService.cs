@@ -13,6 +13,8 @@ namespace Services
 
         private GameObject gameManagerGO { get; set; }
 
+        private Transform startingPointTransform { get; set; }
+
         public void Init()
         {
             gameManagerGO = GameObject.FindGameObjectWithTag("GameManager");
@@ -22,10 +24,12 @@ namespace Services
 
         public void LoadNewGameObjects()
         {
-            GameObject playerGO = Instantiate(Resources.Load("Prefabs/Player", typeof(GameObject))) as GameObject;
-            playerGO.transform.SetParent(gameManagerGO.gameObject.transform);
             GameObject trackGO = Instantiate(Resources.Load("Prefabs/Track", typeof(GameObject))) as GameObject;
             trackGO.transform.SetParent(gameManagerGO.gameObject.transform);
+            startingPointTransform = GameObject.FindGameObjectWithTag("StartPosition").transform;
+            GameObject playerGO = Instantiate(Resources.Load("Prefabs/Player", typeof(GameObject)),startingPointTransform.position,startingPointTransform.rotation) as GameObject;
+            playerGO.transform.SetParent(gameManagerGO.gameObject.transform);
+            //TODO: Set the Camera where it should be set
             gameManager.SetNewGameElements(playerGO,trackGO);
         }
     }

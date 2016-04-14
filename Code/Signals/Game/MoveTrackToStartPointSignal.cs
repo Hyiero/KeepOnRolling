@@ -4,7 +4,7 @@ using strange.extensions.signal.impl;
 
 namespace Signals
 {
-    public class MoveTrackToStartPointSignal : Signal
+    public class MoveBallToStartPointSignal : Signal
     {
     }
 }

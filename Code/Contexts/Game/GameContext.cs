@@ -35,14 +35,12 @@ namespace Contexts
             #region Singleton Binding
             injectionBinder.Bind<IGameService>().To<GameService>().ToSingleton().CrossContext();
             injectionBinder.Bind<IGameManager>().ToValue(gameManager).ToSingleton().CrossContext();
-            injectionBinder.Bind<MoveTrackToStartPointSignal>().ToSingleton().CrossContext();
+            injectionBinder.Bind<MoveBallToStartPointSignal>().ToSingleton().CrossContext();
             #endregion
 
             injectionBinder.Bind<IPlayerView>().To<PlayerView>();
-            injectionBinder.Bind<ITrackStartingPointView>().To<TrackStartingPointView>();
 
             mediationBinder.Bind<PlayerView>().To<PlayerMediator>();
-            mediationBinder.Bind<TrackStartingPointView>().To<TrackStartingPointMediator>();
 
             commandBinder.Bind<QuitGameSignal>().To<QuitGameCommand>();
             commandBinder.Bind<LaunchNewGameSignal>().To<LaunchNewGameCommand>();
