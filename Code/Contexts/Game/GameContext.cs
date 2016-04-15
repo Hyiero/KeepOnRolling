@@ -39,8 +39,11 @@ namespace Contexts
             #endregion
 
             injectionBinder.Bind<IPlayerView>().To<PlayerView>();
+            injectionBinder.Bind<ICameraChaseComponentView>().To<CameraChaseComponentView>();
+
 
             mediationBinder.Bind<PlayerView>().To<PlayerMediator>();
+            mediationBinder.Bind<CameraChaseComponentView>().To<CameraChaseComponentMediator>();
 
             commandBinder.Bind<QuitGameSignal>().To<QuitGameCommand>();
             commandBinder.Bind<LaunchNewGameSignal>().To<LaunchNewGameCommand>();
