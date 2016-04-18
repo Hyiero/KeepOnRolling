@@ -15,13 +15,13 @@ namespace Views
         public void Init()
         {
             Debug.Log("Intialize any speed or constant values here for the chase component");
-            startChase = false;
         }
 
         protected override void Start()
         {
             base.Start();
             gameCamera = this.gameObject.GetComponentInChildren<Camera>();
+            startChase = true;
         }
 
         private void Update()
