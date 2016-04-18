@@ -19,7 +19,7 @@ namespace Managers
         {
             guiCameraAudioListener = guiCamera.GetComponent<AudioListener>();
             Debug.Log("We will deactive whatever we need to at this point and time");
-            //TODO: This is so we don't have to go through start menu, comment out if want to test with start menu screen.
+            //TODO: BY Passes Start Menu. This is so we don't have to go through start menu, comment out if want to test with start menu screen
             ToggleMainMenu();
             ToggleGuiCameraAudioListener();
         }
