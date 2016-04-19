@@ -34,21 +34,23 @@ namespace Views
 
         void FixedUpdate()
         {
-            if (onTrack)
-            {
+            //if (onTrack)
+            //{
                 if (isPlayerCentered)
                 {
-                    playerRigidbody.velocity = Vector3.forward * centeredSpeed;
+                    //playerRigidbody.velocity = Vector3.forward * centeredSpeed;
                     //this.gameObject.transform.Translate(Vector3.forward * 10f * Time.deltaTime);
+                    transform.Translate(Vector3.forward * 10.1f * Time.deltaTime); //Stutters when doing this but gravity and map tilt works perfectly with this
                     MoveLeftOrRight(centeredSpeed);
                 }
                 else
                 {
-                    playerRigidbody.velocity = Vector3.forward * nonCenteredSpeed;
+                    //playerRigidbody.velocity = Vector3.forward * nonCenteredSpeed;
                     //this.gameObject.transform.Translate(Vector3.forward * 12f * Time.deltaTime);
+                    transform.Translate(Vector3.forward * 12f * Time.deltaTime); //Stutters when doing this but gravity and map tilt works perfectly with this
                     MoveLeftOrRight(nonCenteredSpeed);
                 }
-            }
+            //}
         }
 
         void OnCollisionExit(Collision col)
@@ -56,7 +58,7 @@ namespace Views
             if (col.collider.tag == "Track")
             {
                 Debug.Log("We fell");
-                playerRigidbody.velocity = new Vector3(0, -1, 0) * centeredSpeed;
+                //playerRigidbody.velocity = new Vector3(0, -1, 0) * centeredSpeed;
                 onTrack = false;
             }
         }
