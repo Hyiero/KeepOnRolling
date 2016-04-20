@@ -8,7 +8,7 @@ namespace Views
     public class PlayerView : View, IPlayerView
     {
         [SerializeField]
-        private Rigidbody playerRigidbody;
+        private CharacterController playerCharacterController;
 
         [SerializeField]
         private bool isPlayerCentered;
@@ -16,7 +16,7 @@ namespace Views
         [SerializeField]
         private bool onTrack;
 
-        private float centeredSpeed = 10.1f;
+        private float centeredSpeed = 10f;
         private float nonCenteredSpeed = 12f;
 
         public void Init()
@@ -27,40 +27,33 @@ namespace Views
         protected override void Start()
         {
             base.Start();
-            playerRigidbody = this.gameObject.GetComponent<Rigidbody>();
+            playerCharacterController = this.gameObject.GetComponent<CharacterController>();
             isPlayerCentered = false;
             onTrack = true;
         }
 
-        void FixedUpdate()
+        void Update()
         {
-            //if (onTrack)
-            //{
-                if (isPlayerCentered)
-                {
-                    //playerRigidbody.velocity = Vector3.forward * centeredSpeed;
-                    //this.gameObject.transform.Translate(Vector3.forward * 10f * Time.deltaTime);
-                    transform.Translate(Vector3.forward * 10.1f * Time.deltaTime); //Stutters when doing this but gravity and map tilt works perfectly with this
-                    MoveLeftOrRight(centeredSpeed);
-                }
-                else
-                {
-                    //playerRigidbody.velocity = Vector3.forward * nonCenteredSpeed;
-                    //this.gameObject.transform.Translate(Vector3.forward * 12f * Time.deltaTime);
-                    transform.Translate(Vector3.forward * 12f * Time.deltaTime); //Stutters when doing this but gravity and map tilt works perfectly with this
-                    MoveLeftOrRight(nonCenteredSpeed);
-                }
-            //}
+            if (isPlayerCentered)
+            {
+                //playerRigidbody.velocity = Vector3.forward * centeredSpeed;
+                playerCharacterController.Move(Vector3.forward * centeredSpeed * Time.deltaTime);
+                //this.gameObject.transform.Translate(Vector3.forward * centeredSpeed * Time.deltaTime); //Transform.Translate actually doesn't check for collisions??
+                MoveLeftOrRight(centeredSpeed);
+            }
+            else
+            {
+                //playerRigidbody.velocity = Vector3.forward * nonCenteredSpeed;
+                playerCharacterController.Move(Vector3.forward * nonCenteredSpeed * Time.deltaTime);
+                //transform.Translate(Vector3.forward * nonCenteredSpeed * Time.deltaTime); //Transform.Translate actually doesn't check for collisions??
+                MoveLeftOrRight(nonCenteredSpeed);
+            }
         }
 
         void OnCollisionExit(Collision col)
         {
             if (col.collider.tag == "Track")
-            {
-                Debug.Log("We fell");
-                //playerRigidbody.velocity = new Vector3(0, -1, 0) * centeredSpeed;
                 onTrack = false;
-            }
         }
 
         void OnTriggerEnter(Collider col)
@@ -78,9 +71,9 @@ namespace Views
         private void MoveLeftOrRight(float speed)
         {
             if (Input.GetKey(KeyCode.LeftArrow))
-                playerRigidbody.velocity = new Vector3(-1, 0, 1) * speed;
+                playerCharacterController.Move(Vector3.left * 10f * Time.deltaTime);
             else if (Input.GetKey(KeyCode.RightArrow))
-                playerRigidbody.velocity = new Vector3(1, 0, 1) * speed;
+                playerCharacterController.Move(Vector3.right * 12f * Time.deltaTime);
         }
     }
 }
