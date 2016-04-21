@@ -14,7 +14,6 @@ namespace Commands
         public override void Execute()
         {
             gameService.Init();
-            Debug.Log("GameContext has now been engaged");
         }
     }
 }

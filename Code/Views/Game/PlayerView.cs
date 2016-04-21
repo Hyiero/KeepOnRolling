@@ -2,78 +2,80 @@
 using System.Collections;
 using strange.extensions.mediation.impl;
 using Signals;
+using strange.extensions.signal.impl;
+using strange.extensions.promise.api;
 
 namespace Views
 {
     public class PlayerView : View, IPlayerView
     {
-        [SerializeField]
-        private CharacterController playerCharacterController;
+        public Signal<Rigidbody,Vector3> movePlayer { get; set; }
+
+        #region Private Variables
+        private CharacterController playerCharacterController { get; set; }
+        private Rigidbody playerRigidbody { get; set; }
 
         [SerializeField]
         private bool isPlayerCentered;
 
         [SerializeField]
-        private bool onTrack;
-
-        private float centeredSpeed = 10f;
-        private float nonCenteredSpeed = 12f;
+        private float centeredSpeed;
+        private float nonCenteredSpeed { get; set; }
+        private Vector3 forwardAndLeftVector { get; set; }
+        private Vector3 forwardAndRightVector { get; set; }
+        #endregion
 
         public void Init()
         {
             Debug.Log("Player View is alive");
-        }
-
-        protected override void Start()
-        {
-            base.Start();
-            playerCharacterController = this.gameObject.GetComponent<CharacterController>();
+            centeredSpeed = 10f;
+            nonCenteredSpeed = 12f;
             isPlayerCentered = false;
-            onTrack = true;
+            playerRigidbody = this.gameObject.GetComponent<Rigidbody>();
+            forwardAndLeftVector = new Vector3(-1, 0, 1);
+            forwardAndRightVector = new Vector3(1, 0, 1);
+            movePlayer = new Signal<Rigidbody, Vector3>();
         }
 
         void Update()
         {
+            MovePlayer();
+        }
+
+        #region Private Methods
+        private void OnTriggerEnter(Collider col)
+        {
+            if(col.tag == "ChaseComponent")
+               isPlayerCentered = true;
+        }
+        
+        private void OnTriggerExit(Collider col)
+        {
+           if(col.tag == "ChaseComponent")
+               isPlayerCentered = false;
+        }
+
+        private void MovePlayer()
+        {
             if (isPlayerCentered)
             {
-                //playerRigidbody.velocity = Vector3.forward * centeredSpeed;
-                playerCharacterController.Move(Vector3.forward * centeredSpeed * Time.deltaTime);
-                //this.gameObject.transform.Translate(Vector3.forward * centeredSpeed * Time.deltaTime); //Transform.Translate actually doesn't check for collisions??
+                movePlayer.Dispatch(playerRigidbody, (transform.position + (Vector3.forward * centeredSpeed * Time.deltaTime)));
                 MoveLeftOrRight(centeredSpeed);
             }
             else
             {
-                //playerRigidbody.velocity = Vector3.forward * nonCenteredSpeed;
-                playerCharacterController.Move(Vector3.forward * nonCenteredSpeed * Time.deltaTime);
-                //transform.Translate(Vector3.forward * nonCenteredSpeed * Time.deltaTime); //Transform.Translate actually doesn't check for collisions??
+                movePlayer.Dispatch(playerRigidbody, (transform.position + (Vector3.forward * nonCenteredSpeed * Time.deltaTime)));
                 MoveLeftOrRight(nonCenteredSpeed);
             }
-        }
-
-        void OnCollisionExit(Collision col)
-        {
-            if (col.collider.tag == "Track")
-                onTrack = false;
-        }
-
-        void OnTriggerEnter(Collider col)
-        {
-            Debug.Log("Entered a trigger zone");
-            isPlayerCentered = true;
-        }
-        
-        void OnTriggerExit(Collider col)
-        {
-            Debug.Log("Exited a trigger zone");
-            isPlayerCentered = false;
         }
 
         private void MoveLeftOrRight(float speed)
         {
             if (Input.GetKey(KeyCode.LeftArrow))
-                playerCharacterController.Move(Vector3.left * 10f * Time.deltaTime);
+                movePlayer.Dispatch(playerRigidbody, (transform.position + (forwardAndLeftVector * speed * Time.deltaTime)));
             else if (Input.GetKey(KeyCode.RightArrow))
-                playerCharacterController.Move(Vector3.right * 12f * Time.deltaTime);
+                movePlayer.Dispatch(playerRigidbody, (transform.position + (forwardAndRightVector * speed * Time.deltaTime)));
         }
+        #endregion
     }
 }

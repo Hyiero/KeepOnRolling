@@ -6,6 +6,6 @@ namespace Services
     public interface IGameService
     {
         void Init();
-        void LoadNewGameObjects();
+        void LoadNewGameObjectsAndSetParent();
     }
 }

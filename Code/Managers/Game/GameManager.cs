@@ -8,8 +8,8 @@ namespace Managers
 {
     public class GameManager : View,IGameManager
     {
-        [Inject]
-        public IGameService gameService { get; set; }
+        //[Inject]
+        //public IGameService gameService { get; set; }
 
         [SerializeField]
         private GameObject playerGO;
